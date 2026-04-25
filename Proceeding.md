@@ -6,6 +6,9 @@
 
 搭建一个**个人生活博客网站** —— **"My Lifelong Blog"**，与学术无关，专注于记录生活、经验和回忆。
 
+### 版权声明
+- 网站页脚必须标明：`© 2026 TMYZ. All rights reserved. Content may not be reproduced without permission.`
+
 ### 核心模块 (6大板块)
 
 | 板块 | 说明 |
