@@ -7,38 +7,39 @@ export default function MouseEffect() {
   const [isClient, setIsClient] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isClicking, setIsClicking] = useState(false)
-  
+
   const mouseX = useMotionValue(-100)
   const mouseY = useMotionValue(-100)
-  
+
   const springConfig = { damping: 28, stiffness: 300, mass: 0.5 }
   const smoothX = useSpring(mouseX, springConfig)
   const smoothY = useSpring(mouseY, springConfig)
 
   useEffect(() => {
     setIsClient(true)
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX)
       mouseY.set(e.clientY)
-      
+
       const target = e.target as HTMLElement
-      const isClickable = window.getComputedStyle(target).cursor === 'pointer' || 
-                          target.tagName.toLowerCase() === 'a' || 
-                          target.tagName.toLowerCase() === 'button' ||
-                          target.closest('a') || 
-                          target.closest('button')
-                          
+      const isClickable =
+        window.getComputedStyle(target).cursor === 'pointer' ||
+        target.tagName.toLowerCase() === 'a' ||
+        target.tagName.toLowerCase() === 'button' ||
+        target.closest('a') ||
+        target.closest('button')
+
       setIsHovering(!!isClickable)
     }
-    
+
     const handleMouseDown = () => setIsClicking(true)
     const handleMouseUp = () => setIsClicking(false)
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mousedown', handleMouseDown)
     window.addEventListener('mouseup', handleMouseUp)
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mousedown', handleMouseDown)
@@ -56,7 +57,8 @@ export default function MouseEffect() {
         style={{
           x: smoothX,
           y: smoothY,
-          background: 'radial-gradient(circle, rgba(193, 119, 103, 0.45) 0%, rgba(193, 119, 103, 0.1) 35%, transparent 65%)'
+          background:
+            'radial-gradient(circle, rgba(193, 119, 103, 0.45) 0%, rgba(193, 119, 103, 0.1) 35%, transparent 65%)',
         }}
       />
 
@@ -74,9 +76,9 @@ export default function MouseEffect() {
           borderColor: isHovering ? 'rgba(193, 119, 103, 0.9)' : 'rgba(193, 119, 103, 0.5)',
           scale: isClicking ? 0.8 : 1,
         }}
-        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
       />
-      
+
       {/* Tiny precision dot - Brightened with a soft glow */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-[100] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E07A5F] shadow-[0_0_8px_rgba(224,122,95,0.8)]"
@@ -85,8 +87,8 @@ export default function MouseEffect() {
           y: mouseY,
         }}
         animate={{
-          opacity: (isHovering || isClicking) ? 0 : 1,
-          scale: (isHovering || isClicking) ? 0 : 1
+          opacity: isHovering || isClicking ? 0 : 1,
+          scale: isHovering || isClicking ? 0 : 1,
         }}
         transition={{ duration: 0.15 }}
       />
