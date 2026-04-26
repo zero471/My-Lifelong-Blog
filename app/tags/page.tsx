@@ -11,8 +11,8 @@ export default async function Page() {
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
   const CORE_DOMAINS = ['thoughts', 'experiences', 'goods', 'travel', 'cooking', 'fitness']
-  const coreTags = sortedTags.filter(t => CORE_DOMAINS.includes(t.toLowerCase()))
-  const subTags = sortedTags.filter(t => !CORE_DOMAINS.includes(t.toLowerCase()))
+  const coreTags = sortedTags.filter((t) => CORE_DOMAINS.includes(t.toLowerCase()))
+  const subTags = sortedTags.filter((t) => !CORE_DOMAINS.includes(t.toLowerCase()))
 
   return (
     <>
@@ -24,7 +24,7 @@ export default async function Page() {
         </div>
         <div className="flex max-w-lg flex-col gap-6 pt-6 pb-8">
           {tagKeys.length === 0 && 'No tags found.'}
-          
+
           <div className="flex flex-wrap">
             {coreTags.map((t) => (
               <div key={t} className="mt-2 mr-5 mb-2">
@@ -39,7 +39,7 @@ export default async function Page() {
               </div>
             ))}
           </div>
-          
+
           {subTags.length > 0 && (
             <>
               <div className="my-2 h-px w-full bg-[#E6E3DB] dark:bg-gray-700" />

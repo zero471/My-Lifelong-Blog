@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions, @next/next/no-img-element */
 'use client'
 
-import NextImage, { ImageProps } from 'next/image'
+import NextImage, { ImageProps, StaticImageData } from 'next/image'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -9,12 +9,11 @@ const basePath = process.env.BASE_PATH
 
 const Image = ({ src, ...rest }: ImageProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  
   // Ensure basePath is only applied to string paths, not StaticImageData objects
   const imageSrc = typeof src === 'string' ? `${basePath || ''}${src}` : src
   // For the standard HTML img tag, we need the raw string path
-  // Use 'as any' to bypass TypeScript error for StaticRequire type
-  const imgTagSrc = typeof src === 'string' ? `${basePath || ''}${src}` : (src as any).src
+  const imgTagSrc =
+    typeof src === 'string' ? `${basePath || ''}${src}` : (src as StaticImageData).src
 
   return (
     <>

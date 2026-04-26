@@ -41,7 +41,10 @@ export default async function TagPage(props: { params: Promise<{ tag: string }> 
     const normalized = t.toLowerCase()
     if (normalized === 'ai') return 'AI'
     if (normalized === 'mac-settings') return 'Mac-Settings'
-    return t.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
+    return t
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ')
   }
   const title = formatTitle(tag)
   const filteredPosts = allCoreContent(
