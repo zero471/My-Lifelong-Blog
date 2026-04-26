@@ -13,7 +13,8 @@ const Image = ({ src, ...rest }: ImageProps) => {
   // Ensure basePath is only applied to string paths, not StaticImageData objects
   const imageSrc = typeof src === 'string' ? `${basePath || ''}${src}` : src
   // For the standard HTML img tag, we need the raw string path
-  const imgTagSrc = typeof src === 'string' ? `${basePath || ''}${src}` : src.src
+  // Use 'as any' to bypass TypeScript error for StaticRequire type
+  const imgTagSrc = typeof src === 'string' ? `${basePath || ''}${src}` : (src as any).src
 
   return (
     <>
