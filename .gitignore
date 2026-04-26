@@ -45,3 +45,8 @@ yarn-error.log*
 
 # Contentlayer
 .contentlayer
+
+# Agent Dev
+/skills
+/building memory for agent
+/Proceeding.md
