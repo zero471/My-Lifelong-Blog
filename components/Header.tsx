@@ -20,7 +20,7 @@ const Header = () => {
           <div className="mr-3">
             <Image
               src={siteMetadata.siteLogo}
-              alt="My Lifelong Blog Logo"
+              alt="Jensen's Lifelong Blog Logo"
               width={48}
               height={48}
               className="rounded-full"

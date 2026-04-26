@@ -1,4 +1,4 @@
-'use client'
+'use client' // Triggering hot reload for tag counts
 
 import { usePathname } from 'next/navigation'
 import { slug } from 'github-slugger'
@@ -59,19 +59,40 @@ export default function ListLayoutWithTags({
       <div className="mb-12 flex flex-wrap justify-center gap-3">
         <Link
           href="/blog"
-          className={`rounded-full px-4 py-1.5 font-sans text-sm font-medium transition-colors ${pathname === '/blog' ? 'bg-[#C17767] text-white' : 'bg-white text-[#4D463B] shadow-sm hover:bg-[#F2F0EB]'}`}
+          className={`rounded-full border px-5 py-2 font-sans text-sm font-medium transition-all ${
+            pathname === '/blog'
+              ? 'border-[#C17767] bg-[#C17767] text-white shadow-md'
+              : 'border-[#E6E3DB] bg-white text-[#4D463B] hover:border-[#C17767]/50 hover:bg-[#F9F8F6]'
+          }`}
         >
           全部文章
         </Link>
-        {sortedTags.map((t) => {
-          const isActive = pathname.includes(`/tags/${slug(t)}`)
+        {sortedTags
+          .filter((t) => ['thoughts', 'experiences', 'goods', 'travel', 'cooking', 'fitness'].includes(t.toLowerCase()))
+          .map((t) => {
+            const isActive = pathname.includes(`/tags/${slug(t)}`)
+            
+            const formatTag = (text: string) => {
+              const normalized = text.toLowerCase()
+              if (normalized === 'ai') return 'AI'
+              if (normalized === 'mac-settings') return 'Mac-Settings'
+              return text.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
+            }
+
           return (
             <Link
               key={t}
               href={`/tags/${slug(t)}`}
-              className={`rounded-full px-4 py-1.5 font-sans text-sm font-medium transition-colors ${isActive ? 'bg-[#C17767] text-white' : 'bg-white text-[#4D463B] shadow-sm hover:bg-[#F2F0EB]'}`}
+              className={`flex items-center rounded-full border px-4 py-1.5 font-sans text-sm font-medium transition-all ${
+                isActive
+                  ? 'border-[#C17767] bg-[#C17767] text-white shadow-md'
+                  : 'border-[#E6E3DB] bg-white text-[#4D463B] hover:border-[#C17767]/50 hover:bg-[#F9F8F6]'
+              }`}
             >
-              {t} <span className="ml-1 opacity-60">({tagCounts[t]})</span>
+              {formatTag(t)} 
+              <span className={`ml-2 flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-[#F2F0EB] text-[#4D463B]/60'}`}>
+                {tagCounts[t]}
+              </span>
             </Link>
           )
         })}
@@ -115,12 +136,34 @@ export default function ListLayoutWithTags({
                   >
                     {formatDate(date, siteMetadata.locale)}
                   </time>
-                  <div className="flex gap-2">
-                    {tags?.slice(0, 2).map((tag) => (
-                      <span key={tag} className="font-sans text-xs text-[#C17767]">
-                        #{tag}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-2">
+                    {tags
+                      ?.sort((a, b) => {
+                        const core = ['thoughts', 'experiences', 'goods', 'travel', 'cooking', 'fitness']
+                        const aIsCore = core.includes(a.toLowerCase())
+                        const bIsCore = core.includes(b.toLowerCase())
+                        if (aIsCore && !bIsCore) return -1
+                        if (!aIsCore && bIsCore) return 1
+                        return 0
+                      })
+                      .slice(0, 3)
+                      .map((tag) => {
+                        const formatCardTag = (text: string) => {
+                          const normalized = text.toLowerCase().replace(/ /g, '-')
+                          if (normalized === 'ai') return 'AI'
+                          if (normalized === 'mac-settings') return 'Mac-Settings'
+                          return text.split(/[- ]/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('-')
+                        }
+                      
+                      return (
+                        <span 
+                          key={tag} 
+                          className="rounded-md border border-[#C17767]/20 bg-[#C17767]/5 px-2 py-0.5 font-sans text-[11px] font-medium text-[#C17767]"
+                        >
+                          {formatCardTag(tag)}
+                        </span>
+                      )
+                    })}
                   </div>
                 </div>
 

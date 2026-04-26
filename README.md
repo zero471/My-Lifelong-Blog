@@ -1,4 +1,4 @@
-# My Lifelong Blog
+# Jensen's Lifelong Blog
 
 Welcome to the source code of my personal website and blog. I use this space to document my life, thoughts, travel memories, and experiences.
 

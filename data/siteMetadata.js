@@ -1,9 +1,9 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'My Lifelong Blog',
-  author: 'Tmyz',
-  headerTitle: 'My Lifelong Blog',
-  description: 'A first-year PhD student based in Shanghai. Documenting life, thoughts, and memories.',
+  title: 'Jensen\'s Lifelong Blog',
+  author: 'Jensen Huang',
+  headerTitle: 'Jensen\'s Lifelong Blog',
+  description: 'Documenting life, thoughts, and memories.',
   language: 'zh-CN',
   theme: 'light', // system, dark or light
   siteUrl: 'https://my-life-archive.vercel.app',
