@@ -7,13 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
+// Only prepend basePath to local relative paths, not external http/https URLs
+const withBase = (src: string) => (src.startsWith('http') ? src : `${basePath}${src}`)
+
 const Image = ({ src, ...rest }: ImageProps) => {
   const [isOpen, setIsOpen] = useState(false)
   // Ensure basePath is only applied to string paths, not StaticImageData objects
-  const imageSrc = typeof src === 'string' ? `${basePath || ''}${src}` : src
+  const imageSrc = typeof src === 'string' ? withBase(src) : src
   // For the standard HTML img tag, we need the raw string path
-  const imgTagSrc =
-    typeof src === 'string' ? `${basePath || ''}${src}` : (src as StaticImageData).src
+  const imgTagSrc = typeof src === 'string' ? withBase(src) : (src as StaticImageData).src
 
   return (
     <>
