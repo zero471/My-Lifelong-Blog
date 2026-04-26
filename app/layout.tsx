@@ -100,7 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9F8F6" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1C1C1A" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
-      <body className="antialiased pl-[calc(100vw-100%)] font-sans">
+      <body className="pl-[calc(100vw-100%)] font-sans antialiased">
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>

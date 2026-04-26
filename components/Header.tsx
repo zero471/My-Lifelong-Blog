@@ -9,7 +9,8 @@ import SearchButton from './SearchButton'
 const Header = () => {
   let headerClass = 'flex items-center w-full bg-transparent justify-between py-10'
   if (siteMetadata.stickyNav) {
-    headerClass += ' sticky top-0 z-50 bg-[#F9F8F6] dark:bg-[#1C1C1A] backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90'
+    headerClass +=
+      ' sticky top-0 z-50 bg-[#F9F8F6] dark:bg-[#1C1C1A] backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90'
   }
 
   return (
@@ -17,16 +18,16 @@ const Header = () => {
       <Link href="/" aria-label={siteMetadata.headerTitle}>
         <div className="flex items-center justify-between">
           <div className="mr-3">
-            <Image 
-              src={siteMetadata.siteLogo} 
-              alt="My Lifelong Blog Logo" 
-              width={48} 
-              height={48} 
-              className="rounded-full" 
+            <Image
+              src={siteMetadata.siteLogo}
+              alt="My Lifelong Blog Logo"
+              width={48}
+              height={48}
+              className="rounded-full"
             />
           </div>
           {typeof siteMetadata.headerTitle === 'string' ? (
-            <div className="hidden h-6 text-2xl font-serif font-semibold sm:block">
+            <div className="hidden h-6 font-serif text-2xl font-semibold sm:block">
               {siteMetadata.headerTitle}
             </div>
           ) : (

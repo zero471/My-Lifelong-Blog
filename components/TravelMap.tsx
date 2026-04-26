@@ -1,13 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-  ZoomableGroup,
-} from 'react-simple-maps'
+import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import travelLocations, { TravelLocation } from '@/data/travelLocations'
@@ -57,7 +51,7 @@ export default function TravelMap() {
 
   if (!isMounted) {
     return (
-      <div className="relative w-full min-h-[400px] overflow-hidden rounded-2xl border border-gray-200 bg-[#F2F0EB] shadow-sm animate-pulse sm:min-h-[500px]" />
+      <div className="relative min-h-[400px] w-full animate-pulse overflow-hidden rounded-2xl border border-gray-200 bg-[#F2F0EB] shadow-sm sm:min-h-[500px]" />
     )
   }
 
@@ -83,19 +77,26 @@ export default function TravelMap() {
             onMoveEnd={handleMoveEnd}
             minZoom={0.5}
             maxZoom={4}
-            translateExtent={[[-8300, -1000], [7300, 1500]]}
+            translateExtent={[
+              [-8300, -1000],
+              [7300, 1500],
+            ]}
           >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 [-2, -1, 0, 1, 2].map((offset) => (
-                  <g key={`geo-group-${offset}`} transform={`translate(${offset * 500 * 2 * Math.PI}, 0)`}>
+                  <g
+                    key={`geo-group-${offset}`}
+                    transform={`translate(${offset * 500 * 2 * Math.PI}, 0)`}
+                  >
                     {geographies.map((geo) => {
-                      const isChinaOrTaiwan = (name: string) => name === 'China' || name === 'Taiwan';
-                      const geoName = geo.properties.name;
+                      const isChinaOrTaiwan = (name: string) =>
+                        name === 'China' || name === 'Taiwan'
+                      const geoName = geo.properties.name
                       const isHighlighted =
                         hoveredCountry &&
                         ((isChinaOrTaiwan(hoveredCountry) && isChinaOrTaiwan(geoName)) ||
-                          hoveredCountry === geoName);
+                          hoveredCountry === geoName)
 
                       return (
                         <Geography
@@ -120,7 +121,10 @@ export default function TravelMap() {
             </Geographies>
 
             {[-2, -1, 0, 1, 2].map((offset) => (
-              <g key={`marker-group-${offset}`} transform={`translate(${offset * 500 * 2 * Math.PI}, 0)`}>
+              <g
+                key={`marker-group-${offset}`}
+                transform={`translate(${offset * 500 * 2 * Math.PI}, 0)`}
+              >
                 {travelLocations.map((location) => (
                   <Marker
                     key={`${offset}-${location.id}`}
@@ -175,7 +179,7 @@ export default function TravelMap() {
         </div>
 
         {/* Zoom controls */}
-        <div className="absolute bottom-4 right-4 flex flex-col gap-2">
+        <div className="absolute right-4 bottom-4 flex flex-col gap-2">
           <button
             onClick={handleZoomIn}
             className="flex h-8 w-8 items-center justify-center rounded-full bg-white/80 font-sans text-lg text-[#C17767] shadow-sm backdrop-blur-sm transition-colors hover:bg-white focus:outline-none"
@@ -220,7 +224,12 @@ export default function TravelMap() {
                 className="absolute top-6 right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-gray-600 shadow-sm transition-colors hover:bg-white hover:text-gray-900"
                 aria-label="Close"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                >
                   <path
                     fillRule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -233,15 +242,13 @@ export default function TravelMap() {
               <div className="px-8 pt-16 pb-12">
                 {/* Location header */}
                 <div className="mb-8">
-                  <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#C17767]">
+                  <span className="font-sans text-[10px] tracking-[0.2em] text-[#C17767] uppercase">
                     {selectedLocation.date}
                   </span>
                   <h2 className="mt-2 font-serif text-4xl font-medium tracking-tight text-[#2C2C2A]">
                     {selectedLocation.nameZh}
                   </h2>
-                  <p className="mt-1 font-sans text-sm text-gray-500">
-                    {selectedLocation.name}
-                  </p>
+                  <p className="mt-1 font-sans text-sm text-gray-500">{selectedLocation.name}</p>
                 </div>
 
                 {/* Description */}
@@ -283,7 +290,12 @@ export default function TravelMap() {
                     className="mt-10 inline-flex items-center gap-2 font-sans text-sm font-medium text-[#677b63] transition-colors hover:text-[#50614c]"
                   >
                     阅读完整游记
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      className="h-4 w-4"
+                    >
                       <path
                         fillRule="evenodd"
                         d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"

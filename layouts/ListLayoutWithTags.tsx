@@ -57,8 +57,8 @@ export default function ListLayoutWithTags({
 
       {/* Tags Filter */}
       <div className="mb-12 flex flex-wrap justify-center gap-3">
-        <Link 
-          href="/blog" 
+        <Link
+          href="/blog"
           className={`rounded-full px-4 py-1.5 font-sans text-sm font-medium transition-colors ${pathname === '/blog' ? 'bg-[#C17767] text-white' : 'bg-white text-[#4D463B] shadow-sm hover:bg-[#F2F0EB]'}`}
         >
           全部文章
@@ -82,17 +82,23 @@ export default function ListLayoutWithTags({
         {displayPosts.map((post, index) => {
           const { path, date, title, summary, tags, images } = post
           // Try to get cover image or use a default
-          const coverImage = (images && images.length > 0) ? images[0] : 'https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800&auto=format&fit=crop'
-          
+          const coverImage =
+            images && images.length > 0
+              ? images[0]
+              : 'https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800&auto=format&fit=crop'
+
           return (
-            <motion.article 
+            <motion.article
               key={path}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
             >
-              <Link href={`/${path}`} className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+              <Link
+                href={`/${path}`}
+                className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100"
+              >
                 <img
                   src={coverImage}
                   alt={title}
@@ -100,10 +106,13 @@ export default function ListLayoutWithTags({
                 />
                 <div className="absolute inset-0 bg-[#C17767]/0 mix-blend-multiply transition-colors group-hover:bg-[#C17767]/10" />
               </Link>
-              
+
               <div className="flex flex-1 flex-col p-6">
                 <div className="mb-3 flex items-center justify-between">
-                  <time dateTime={date} className="font-sans text-xs font-medium tracking-wider text-[#677b63] uppercase">
+                  <time
+                    dateTime={date}
+                    className="font-sans text-xs font-medium tracking-wider text-[#677b63] uppercase"
+                  >
                     {formatDate(date, siteMetadata.locale)}
                   </time>
                   <div className="flex gap-2">
@@ -114,20 +123,32 @@ export default function ListLayoutWithTags({
                     ))}
                   </div>
                 </div>
-                
-                <h2 className="mb-3 font-serif text-2xl font-medium leading-snug text-[#2C2C2A] transition-colors group-hover:text-[#C17767]">
+
+                <h2 className="mb-3 font-serif text-2xl leading-snug font-medium text-[#2C2C2A] transition-colors group-hover:text-[#C17767]">
                   <Link href={`/${path}`}>{title}</Link>
                 </h2>
-                
+
                 <p className="line-clamp-3 font-sans text-sm leading-relaxed text-[#4D463B] opacity-80">
                   {summary}
                 </p>
-                
+
                 <div className="mt-auto pt-6">
-                  <Link href={`/${path}`} className="inline-flex items-center font-sans text-sm font-medium text-[#C17767] transition-colors hover:text-[#A66051]">
-                    阅读全文 
-                    <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <Link
+                    href={`/${path}`}
+                    className="inline-flex items-center font-sans text-sm font-medium text-[#C17767] transition-colors hover:text-[#A66051]"
+                  >
+                    阅读全文
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="ml-1 h-4 w-4"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </Link>
                 </div>
@@ -154,7 +175,10 @@ export default function ListLayoutWithTags({
 
 function Pagination({ totalPages, currentPage }: PaginationProps) {
   const pathname = usePathname()
-  const basePath = pathname.replace(/^\//, '').replace(/\/page\/\d+\/?$/, '').replace(/\/$/, '')
+  const basePath = pathname
+    .replace(/^\//, '')
+    .replace(/\/page\/\d+\/?$/, '')
+    .replace(/\/$/, '')
   const prevPage = currentPage - 1 > 0
   const nextPage = currentPage + 1 <= totalPages
 
@@ -163,7 +187,10 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
       {!prevPage ? (
         <span className="text-gray-400">上一页</span>
       ) : (
-        <Link href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`} className="text-[#C17767] hover:underline">
+        <Link
+          href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
+          className="text-[#C17767] hover:underline"
+        >
           上一页
         </Link>
       )}
@@ -173,7 +200,10 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
       {!nextPage ? (
         <span className="text-gray-400">下一页</span>
       ) : (
-        <Link href={`/${basePath}/page/${currentPage + 1}`} className="text-[#C17767] hover:underline">
+        <Link
+          href={`/${basePath}/page/${currentPage + 1}`}
+          className="text-[#C17767] hover:underline"
+        >
           下一页
         </Link>
       )}
