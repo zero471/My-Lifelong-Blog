@@ -9,6 +9,7 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
+import { motion } from 'framer-motion'
 
 interface PaginationProps {
   totalPages: number
@@ -19,51 +20,6 @@ interface ListLayoutProps {
   title: string
   initialDisplayPosts?: CoreContent<Blog>[]
   pagination?: PaginationProps
-}
-
-function Pagination({ totalPages, currentPage }: PaginationProps) {
-  const pathname = usePathname()
-  const segments = pathname.split('/')
-  const lastSegment = segments[segments.length - 1]
-  const basePath = pathname
-    .replace(/^\//, '') // Remove leading slash
-    .replace(/\/page\/\d+\/?$/, '') // Remove any trailing /page
-    .replace(/\/$/, '') // Remove trailing slash
-  const prevPage = currentPage - 1 > 0
-  const nextPage = currentPage + 1 <= totalPages
-
-  return (
-    <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-      <nav className="flex justify-between">
-        {!prevPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
-          </button>
-        )}
-        {prevPage && (
-          <Link
-            href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
-            rel="prev"
-          >
-            Previous
-          </Link>
-        )}
-        <span>
-          {currentPage} of {totalPages}
-        </span>
-        {!nextPage && (
-          <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
-          </Link>
-        )}
-      </nav>
-    </div>
-  )
 }
 
 export default function ListLayoutWithTags({
@@ -79,91 +35,148 @@ export default function ListLayoutWithTags({
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
+  // Find current tag name in Chinese or capitalize if not found
+  const getDisplayTitle = () => {
+    if (pathname.includes('/tags/thoughts')) return '思考 (Thoughts)'
+    if (pathname.includes('/tags/experiences')) return '生活经验 (Experiences)'
+    if (pathname.includes('/tags/goods')) return '购物指北 (Goods)'
+    if (pathname.includes('/tags/cooking')) return '厨艺 (Cooking)'
+    if (pathname.includes('/tags/fitness')) return '运动健身 (Fitness)'
+    return title
+  }
+
   return (
-    <>
-      <div>
-        <div className="pt-6 pb-6">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:hidden sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-            {title}
-          </h1>
-        </div>
-        <div className="flex sm:space-x-24">
-          <div className="hidden h-full max-h-screen max-w-[280px] min-w-[280px] flex-wrap overflow-auto rounded-sm bg-gray-50 pt-5 shadow-md sm:flex dark:bg-gray-900/70 dark:shadow-gray-800/40">
-            <div className="px-6 py-4">
-              {pathname.startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase">All Posts</h3>
-              ) : (
-                <Link
-                  href={`/blog`}
-                  className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
-                >
-                  All Posts
-                </Link>
-              )}
-              <ul>
-                {sortedTags.map((t) => {
-                  return (
-                    <li key={t} className="my-3">
-                      {decodeURI(pathname.split('/tags/')[1]) === slug(t) ? (
-                        <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
-                          {`${t} (${tagCounts[t]})`}
-                        </h3>
-                      ) : (
-                        <Link
-                          href={`/tags/${slug(t)}`}
-                          className="hover:text-primary-500 dark:hover:text-primary-500 px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
-                          aria-label={`View posts tagged ${t}`}
-                        >
-                          {`${t} (${tagCounts[t]})`}
-                        </Link>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          </div>
-          <div>
-            <ul>
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags } = post
-                return (
-                  <li key={path} className="py-5">
-                    <article className="flex flex-col space-y-2 xl:space-y-0">
-                      <dl>
-                        <dt className="sr-only">Published on</dt>
-                        <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                          <time dateTime={date} suppressHydrationWarning>
-                            {formatDate(date, siteMetadata.locale)}
-                          </time>
-                        </dd>
-                      </dl>
-                      <div className="space-y-3">
-                        <div>
-                          <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                            <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags?.map((tag) => <Tag key={tag} text={tag} />)}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
-                      </div>
-                    </article>
-                  </li>
-                )
-              })}
-            </ul>
-            {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-            )}
-          </div>
-        </div>
+    <div className="mx-auto max-w-6xl pt-12 pb-24">
+      {/* Header section */}
+      <div className="mb-16 border-b border-[#E6E3DB] pb-10 text-center">
+        <h1 className="font-serif text-5xl font-medium tracking-tight text-[#2C2C2A] md:text-6xl">
+          {getDisplayTitle()}
+        </h1>
+        <p className="mt-4 font-sans text-[#677b63]">探索关于生活的碎片与感悟</p>
       </div>
-    </>
+
+      {/* Tags Filter */}
+      <div className="mb-12 flex flex-wrap justify-center gap-3">
+        <Link 
+          href="/blog" 
+          className={`rounded-full px-4 py-1.5 font-sans text-sm font-medium transition-colors ${pathname === '/blog' ? 'bg-[#C17767] text-white' : 'bg-white text-[#4D463B] shadow-sm hover:bg-[#F2F0EB]'}`}
+        >
+          全部文章
+        </Link>
+        {sortedTags.map((t) => {
+          const isActive = pathname.includes(`/tags/${slug(t)}`)
+          return (
+            <Link
+              key={t}
+              href={`/tags/${slug(t)}`}
+              className={`rounded-full px-4 py-1.5 font-sans text-sm font-medium transition-colors ${isActive ? 'bg-[#C17767] text-white' : 'bg-white text-[#4D463B] shadow-sm hover:bg-[#F2F0EB]'}`}
+            >
+              {t} <span className="ml-1 opacity-60">({tagCounts[t]})</span>
+            </Link>
+          )
+        })}
+      </div>
+
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {displayPosts.map((post, index) => {
+          const { path, date, title, summary, tags, images } = post
+          // Try to get cover image or use a default
+          const coverImage = (images && images.length > 0) ? images[0] : 'https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800&auto=format&fit=crop'
+          
+          return (
+            <motion.article 
+              key={path}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
+            >
+              <Link href={`/${path}`} className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+                <img
+                  src={coverImage}
+                  alt={title}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[#C17767]/0 mix-blend-multiply transition-colors group-hover:bg-[#C17767]/10" />
+              </Link>
+              
+              <div className="flex flex-1 flex-col p-6">
+                <div className="mb-3 flex items-center justify-between">
+                  <time dateTime={date} className="font-sans text-xs font-medium tracking-wider text-[#677b63] uppercase">
+                    {formatDate(date, siteMetadata.locale)}
+                  </time>
+                  <div className="flex gap-2">
+                    {tags?.slice(0, 2).map((tag) => (
+                      <span key={tag} className="font-sans text-xs text-[#C17767]">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <h2 className="mb-3 font-serif text-2xl font-medium leading-snug text-[#2C2C2A] transition-colors group-hover:text-[#C17767]">
+                  <Link href={`/${path}`}>{title}</Link>
+                </h2>
+                
+                <p className="line-clamp-3 font-sans text-sm leading-relaxed text-[#4D463B] opacity-80">
+                  {summary}
+                </p>
+                
+                <div className="mt-auto pt-6">
+                  <Link href={`/${path}`} className="inline-flex items-center font-sans text-sm font-medium text-[#C17767] transition-colors hover:text-[#A66051]">
+                    阅读全文 
+                    <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </motion.article>
+          )
+        })}
+      </div>
+
+      {displayPosts.length === 0 && (
+        <div className="py-24 text-center">
+          <p className="font-serif text-2xl text-[#2C2C2A]/50">这里还在酝酿中...</p>
+        </div>
+      )}
+
+      {pagination && pagination.totalPages > 1 && (
+        <div className="mt-16 flex justify-center border-t border-[#E6E3DB] pt-10">
+          <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Pagination({ totalPages, currentPage }: PaginationProps) {
+  const pathname = usePathname()
+  const basePath = pathname.replace(/^\//, '').replace(/\/page\/\d+\/?$/, '').replace(/\/$/, '')
+  const prevPage = currentPage - 1 > 0
+  const nextPage = currentPage + 1 <= totalPages
+
+  return (
+    <nav className="flex items-center gap-4 font-sans text-sm font-medium">
+      {!prevPage ? (
+        <span className="text-gray-400">上一页</span>
+      ) : (
+        <Link href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`} className="text-[#C17767] hover:underline">
+          上一页
+        </Link>
+      )}
+      <span className="text-[#4D463B]">
+        {currentPage} / {totalPages}
+      </span>
+      {!nextPage ? (
+        <span className="text-gray-400">下一页</span>
+      ) : (
+        <Link href={`/${basePath}/page/${currentPage + 1}`} className="text-[#C17767] hover:underline">
+          下一页
+        </Link>
+      )}
+    </nav>
   )
 }
