@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/forms";
+@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
 @custom-variant dark (&:where(.dark, .dark *));
@@ -7,9 +7,10 @@
 /* Core theme configuration */
 @theme {
   /* Font families */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-serif: var(--font-newsreader), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans:
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
   /* Colors */
   /* Sage Green as primary */
@@ -17,7 +18,7 @@
   --color-primary-100: #e3e8e1;
   --color-primary-200: #c9d4c5;
   --color-primary-300: #a3b69d;
-  --color-primary-400: #8A9A86;
+  --color-primary-400: #8a9a86;
   --color-primary-500: #677b63;
   --color-primary-600: #50614c;
   --color-primary-700: #414e3e;
@@ -26,20 +27,20 @@
   --color-primary-950: #171d18;
 
   /* Terracotta */
-  --color-terracotta: #C17767;
+  --color-terracotta: #c17767;
 
   /* Warm Grays */
-  --color-gray-50: #FAF9F7;
-  --color-gray-100: #F2F0EB;
-  --color-gray-200: #E6E3DB;
-  --color-gray-300: #D5D0C5;
-  --color-gray-400: #B8B0A1;
-  --color-gray-500: #9C9281;
+  --color-gray-50: #faf9f7;
+  --color-gray-100: #f2f0eb;
+  --color-gray-200: #e6e3db;
+  --color-gray-300: #d5d0c5;
+  --color-gray-400: #b8b0a1;
+  --color-gray-500: #9c9281;
   --color-gray-600: #827867;
-  --color-gray-700: #665D4F;
-  --color-gray-800: #4D463B;
-  --color-gray-900: #2C2C2A;
-  --color-gray-950: #1C1C1A;
+  --color-gray-700: #665d4f;
+  --color-gray-800: #4d463b;
+  --color-gray-900: #2c2c2a;
+  --color-gray-950: #1c1c1a;
 
   /* Line heights */
   --line-height-11: 2.75rem;
@@ -63,15 +64,15 @@
   }
 
   body {
-    background-color: #F9F8F6;
-    color: #2C2C2A;
+    background-color: #f9f8f6;
+    color: #2c2c2a;
     /* Subtle noise texture */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
   }
 
   .dark body {
-    background-color: #1C1C1A;
-    color: #E6E3DB;
+    background-color: #1c1c1a;
+    color: #e6e3db;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
   }
 
@@ -89,6 +90,47 @@
 }
 
 @layer utilities {
+  @keyframes entry-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--entry-distance, 20px), 0) rotate(var(--entry-rotate, 0deg));
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, var(--entry-y, 0), 0) rotate(var(--entry-rotate, 0deg));
+    }
+  }
+
+  .entry-rise {
+    opacity: 1;
+    transform: translate3d(0, var(--entry-y, 0), 0) rotate(var(--entry-rotate, 0deg));
+    animation: entry-rise var(--entry-duration, 600ms)
+      var(--entry-ease, cubic-bezier(0.21, 0.47, 0.32, 0.98)) var(--entry-delay, 0ms) backwards;
+  }
+
+  .polaroid-card {
+    box-shadow: 0 4px 15px -3px rgb(0 0 0 / 8%);
+    transition:
+      transform 350ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 350ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .group:hover .polaroid-card {
+    transform: translateY(-15px) rotate(var(--hover-rotate, 0deg)) scale(1.05);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 15%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry-rise {
+      animation: none;
+    }
+
+    .polaroid-card {
+      transition: none;
+    }
+  }
+
   .prose {
     /* Editorial typography base */
     color: var(--color-gray-800);
@@ -127,7 +169,7 @@
       border-radius: 0 0.5rem 0.5rem 0;
       quotes: none;
     }
-    
+
     & blockquote p:first-of-type::before {
       content: '';
     }
