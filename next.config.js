@@ -68,6 +68,9 @@ module.exports = () => {
     basePath,
     reactStrictMode: true,
     trailingSlash: true,
+    env: {
+      NEXT_PUBLIC_BASE_PATH: process.env.BASE_PATH || '',
+    },
     turbopack: {
       root: process.cwd(),
       rules: {

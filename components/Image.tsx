@@ -5,7 +5,7 @@ import NextImage, { ImageProps, StaticImageData } from 'next/image'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const basePath = process.env.BASE_PATH
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
 const Image = ({ src, ...rest }: ImageProps) => {
   const [isOpen, setIsOpen] = useState(false)
