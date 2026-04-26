@@ -9,7 +9,11 @@ const basePath = process.env.BASE_PATH
 
 const Image = ({ src, ...rest }: ImageProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const imageSrc = `${basePath || ''}${src}`
+  
+  // Ensure basePath is only applied to string paths, not StaticImageData objects
+  const imageSrc = typeof src === 'string' ? `${basePath || ''}${src}` : src
+  // For the standard HTML img tag, we need the raw string path
+  const imgTagSrc = typeof src === 'string' ? `${basePath || ''}${src}` : src.src
 
   return (
     <>
@@ -40,7 +44,7 @@ const Image = ({ src, ...rest }: ImageProps) => {
             >
               {/* Fallback to standard img tag for full resolution zooming without Next.js Image constraints */}
               <img
-                src={typeof src === 'string' ? src : imageSrc}
+                src={imgTagSrc}
                 alt={rest.alt || 'Lightbox image'}
                 className="h-auto max-h-[90vh] w-auto max-w-[90vw] rounded-md object-contain shadow-2xl ring-1 ring-black/5"
               />
