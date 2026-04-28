@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import travelLocations, { TravelLocation } from '@/data/travelLocations'
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
@@ -285,7 +286,7 @@ export default function TravelMap() {
 
                 {/* Blog link */}
                 {selectedLocation.blogSlug && (
-                  <a
+                  <Link
                     href={`/blog/${selectedLocation.blogSlug}`}
                     className="mt-10 inline-flex items-center gap-2 font-sans text-sm font-medium text-[#677b63] transition-colors hover:text-[#50614c]"
                   >
@@ -302,7 +303,7 @@ export default function TravelMap() {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </a>
+                  </Link>
                 )}
               </div>
             </motion.div>
