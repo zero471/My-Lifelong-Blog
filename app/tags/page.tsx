@@ -10,8 +10,8 @@ export default async function Page() {
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
   const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
-  const CORE_DOMAINS = ['thoughts', 'experiences', 'goods', 'travel', 'cooking', 'fitness']
-  const coreTags = sortedTags.filter((t) => CORE_DOMAINS.includes(t.toLowerCase()))
+  const CORE_DOMAINS = ['experiences', 'thoughts', 'travel', 'fitness', 'goods', 'cooking']
+  const coreTags = CORE_DOMAINS.filter((t) => tagKeys.includes(t))
   const subTags = sortedTags.filter((t) => !CORE_DOMAINS.includes(t.toLowerCase()))
 
   return (

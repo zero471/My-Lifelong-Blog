@@ -24,6 +24,7 @@ const travelLocations: TravelLocation[] = [
       'https://images.unsplash.com/photo-1537531383496-f4749b26a79b?q=80&w=500&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1548919973-5cef591cdbc9?q=80&w=500&auto=format&fit=crop',
     ],
+    blogSlug: 'shanghai-first-impressions',
   },
   {
     id: 'beijing',

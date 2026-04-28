@@ -11,6 +11,8 @@ import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import tagData from 'app/tag-data.json'
 
+const CORE_TAG_ORDER = ['experiences', 'thoughts', 'travel', 'fitness', 'goods', 'cooking']
+
 interface PaginationProps {
   totalPages: number
   currentPage: number
@@ -31,7 +33,7 @@ export default function ListLayoutWithTags({
   const pathname = usePathname()
   const tagCounts = tagData as Record<string, number>
   const tagKeys = Object.keys(tagCounts)
-  const sortedTags = tagKeys.sort((a, b) => tagCounts[b] - tagCounts[a])
+  const coreTags = CORE_TAG_ORDER.filter((tag) => tagKeys.includes(tag))
 
   const displayPosts = initialDisplayPosts.length > 0 ? initialDisplayPosts : posts
 
@@ -40,6 +42,7 @@ export default function ListLayoutWithTags({
     if (pathname.includes('/tags/thoughts')) return '思考 (Thoughts)'
     if (pathname.includes('/tags/experiences')) return '生活经验 (Experiences)'
     if (pathname.includes('/tags/goods')) return '购物指北 (Goods)'
+    if (pathname.includes('/tags/travel')) return '旅行 (Travel)'
     if (pathname.includes('/tags/cooking')) return '厨艺 (Cooking)'
     if (pathname.includes('/tags/fitness')) return '运动健身 (Fitness)'
     return title
@@ -67,44 +70,38 @@ export default function ListLayoutWithTags({
         >
           全部文章
         </Link>
-        {sortedTags
-          .filter((t) =>
-            ['thoughts', 'experiences', 'goods', 'travel', 'cooking', 'fitness'].includes(
-              t.toLowerCase()
-            )
-          )
-          .map((t) => {
-            const isActive = pathname.includes(`/tags/${slug(t)}`)
+        {coreTags.map((t) => {
+          const isActive = pathname.includes(`/tags/${slug(t)}`)
 
-            const formatTag = (text: string) => {
-              const normalized = text.toLowerCase()
-              if (normalized === 'ai') return 'AI'
-              if (normalized === 'mac-settings') return 'Mac-Settings'
-              return text
-                .split('-')
-                .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-                .join(' ')
-            }
+          const formatTag = (text: string) => {
+            const normalized = text.toLowerCase()
+            if (normalized === 'ai') return 'AI'
+            if (normalized === 'mac-settings') return 'Mac-Settings'
+            return text
+              .split('-')
+              .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+              .join(' ')
+          }
 
-            return (
-              <Link
-                key={t}
-                href={`/tags/${slug(t)}`}
-                className={`flex items-center rounded-full border px-4 py-1.5 font-sans text-sm font-medium transition-all ${
-                  isActive
-                    ? 'border-[#C17767] bg-[#C17767] text-white shadow-md'
-                    : 'border-[#E6E3DB] bg-white text-[#4D463B] hover:border-[#C17767]/50 hover:bg-[#F9F8F6]'
-                }`}
+          return (
+            <Link
+              key={t}
+              href={`/tags/${slug(t)}`}
+              className={`flex items-center rounded-full border px-4 py-1.5 font-sans text-sm font-medium transition-all ${
+                isActive
+                  ? 'border-[#C17767] bg-[#C17767] text-white shadow-md'
+                  : 'border-[#E6E3DB] bg-white text-[#4D463B] hover:border-[#C17767]/50 hover:bg-[#F9F8F6]'
+              }`}
+            >
+              {formatTag(t)}
+              <span
+                className={`ml-2 flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-[#F2F0EB] text-[#4D463B]/60'}`}
               >
-                {formatTag(t)}
-                <span
-                  className={`ml-2 flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-[#F2F0EB] text-[#4D463B]/60'}`}
-                >
-                  {tagCounts[t]}
-                </span>
-              </Link>
-            )
-          })}
+                {tagCounts[t]}
+              </span>
+            </Link>
+          )
+        })}
       </div>
 
       {/* Grid Layout */}
