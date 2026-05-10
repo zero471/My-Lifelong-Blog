@@ -270,12 +270,10 @@ export default function TravelMap() {
                         className="bg-white p-2 pb-6 shadow-md"
                       >
                         <div className="relative aspect-square w-full overflow-hidden">
-                          <Image
-                            src={photo}
+                          <img
+                            src={photo.startsWith('http') ? photo : `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${photo}`}
                             alt={`${selectedLocation.nameZh} memory ${index + 1}`}
-                            fill
-                            className="object-cover"
-                            sizes="200px"
+                            className="h-full w-full object-cover"
                           />
                           <div className="pointer-events-none absolute inset-0 bg-[#C17767]/5 mix-blend-multiply" />
                         </div>

@@ -113,6 +113,10 @@ export default function ListLayoutWithTags({
             images && images.length > 0
               ? images[0]
               : 'https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800&auto=format&fit=crop'
+              
+          const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+          const coverSrc = coverImage.startsWith('http') ? coverImage : `${basePath}${coverImage}`
+
           const animationVars = {
             '--entry-delay': `${index * 100}ms`,
             '--entry-duration': '500ms',
@@ -127,7 +131,7 @@ export default function ListLayoutWithTags({
                   className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100"
                 >
                   <img
-                    src={coverImage}
+                    src={coverSrc}
                     alt={title}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
