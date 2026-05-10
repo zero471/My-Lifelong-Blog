@@ -57,19 +57,20 @@ const travelLocations: TravelLocation[] = [
     date: '2023',
     description: '秩序与混乱的完美平衡，涩谷的十字路口永远让人心跳加速。',
     photos: [
-      'static/images/travel_map/sunrise_dlc.jpeg',
+      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=500&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=500&auto=format&fit=crop',
+
     ],
   },
-    {
+  {
     id: 'dalian',
     name: 'Dalian',
     nameZh: '大连',
     coordinates: [121.6190, 38.9120],
-    date: '2023',
+    date: '2021-2025',
     description: 'Here I finished my undergraduate studies. Dalian, a beautiful place, I met my love, some good friends here.',
     photos: [
-      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=500&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=500&auto=format&fit=crop',
+      '/static/images/travel_map/sunrise_dlc.jpeg',
     ],
     blogSlug: 'memory-of-dalian',
   }

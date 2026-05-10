@@ -1,14 +1,14 @@
 {
+  "travel": 2,
   "experiences": 5,
   "ai": 2,
   "tools": 2,
   "thoughts": 4,
   "books": 2,
   "mac-settings": 2,
-  "fitness": 1,
   "photography": 2,
   "music": 2,
   "goods": 1,
-  "travel": 1,
-  "cooking": 1
+  "cooking": 1,
+  "fitness": 1
 }
