@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import type { CSSProperties } from 'react'
@@ -113,7 +114,7 @@ export default function ListLayoutWithTags({
             images && images.length > 0
               ? images[0]
               : 'https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=800&auto=format&fit=crop'
-              
+
           const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
           const coverSrc = coverImage.startsWith('http') ? coverImage : `${basePath}${coverImage}`
 

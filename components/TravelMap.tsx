@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
@@ -271,7 +272,11 @@ export default function TravelMap() {
                       >
                         <div className="relative aspect-square w-full overflow-hidden">
                           <img
-                            src={photo.startsWith('http') ? photo : `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${photo}`}
+                            src={
+                              photo.startsWith('http')
+                                ? photo
+                                : `${process.env.NEXT_PUBLIC_BASE_PATH || ''}${photo}`
+                            }
                             alt={`${selectedLocation.nameZh} memory ${index + 1}`}
                             className="h-full w-full object-cover"
                           />
